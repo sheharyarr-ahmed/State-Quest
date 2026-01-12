@@ -7,10 +7,13 @@ import StartScreen from "./StartScreen.js";
 import Question from "./Question.js";
 
 const initialState = {
+  //updates that are visible on the screen
   questions: [],
   //  status can be loading, ready, active, finished
   status: "loading",
   index: 0,
+  answer: null,
+  points: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -30,13 +33,23 @@ function reducer(state, action) {
         ...state,
         status: "active",
       };
+    case "newAnswer":
+      const question = state.questions.at(state.index);
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === question.correctOption
+            ? state.points + question.points
+            : state.points,
+      };
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status, index }, dispatch] = useReducer(
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -59,7 +72,13 @@ export default function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {/* now how do wwe start this active state, go to use reducer */}
-        {status == "active" && <Question question={questions[index]} />}
+        {status == "active" && (
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </Main>
     </div>
   );
