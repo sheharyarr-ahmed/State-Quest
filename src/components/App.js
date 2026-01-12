@@ -93,7 +93,9 @@ export default function App() {
     0
   );
   useEffect(function () {
-    fetch("http://localhost:4000/questions")
+    // fetch("http://localhost:4000/questions")
+    // for the sake of deployment the following line was added
+    fetch("/questions.json")
       .then((res) => res.json())
       // .then((data) => console.log(data))
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
