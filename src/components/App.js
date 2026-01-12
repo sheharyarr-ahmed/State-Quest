@@ -5,6 +5,7 @@ import Loader from "./Loader.js";
 import Error from "./Error.js";
 import StartScreen from "./StartScreen.js";
 import Question from "./Question.js";
+import NextButton from "./NextButton.js";
 
 const initialState = {
   //updates that are visible on the screen
@@ -43,6 +44,13 @@ function reducer(state, action) {
             ? state.points + question.points
             : state.points,
       };
+
+    case "nextQuestion":
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+      };
     default:
       throw new Error("Action unknown");
   }
@@ -73,11 +81,14 @@ export default function App() {
         )}
         {/* now how do wwe start this active state, go to use reducer */}
         {status == "active" && (
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
       </Main>
     </div>
