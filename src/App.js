@@ -4,6 +4,7 @@ import Main from "./Main.js";
 import Loader from "./Loader.js";
 import Error from "./Error.js";
 import StartScreen from "./StartScreen.js";
+import Question from "./Question.js";
 
 const initialState = {
   questions: [],
@@ -22,6 +23,11 @@ function reducer(state, action) {
       return {
         ...state,
         status: "error",
+      };
+    case "start":
+      return {
+        ...state,
+        status: "active",
       };
     default:
       throw new Error("Action unknown");
@@ -45,7 +51,11 @@ export default function App() {
       <Main>
         {status == "loading" && <Loader />}
         {status == "error" && <Error />}
-        {status == "ready" && <StartScreen numQuestions={numQuestions} />}
+        {status == "ready" && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {/* now how do wwe start this active state, go to use reducer */}
+        {status == "active" && <Question />}
       </Main>
     </div>
   );
