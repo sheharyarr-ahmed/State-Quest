@@ -10,6 +10,7 @@ const initialState = {
   questions: [],
   //  status can be loading, ready, active, finished
   status: "loading",
+  index: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -35,7 +36,10 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, index }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
   const numQuestions = questions.length;
   useEffect(function () {
     fetch("http://localhost:4000/questions")
@@ -55,7 +59,7 @@ export default function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {/* now how do wwe start this active state, go to use reducer */}
-        {status == "active" && <Question />}
+        {status == "active" && <Question question={questions[index]} />}
       </Main>
     </div>
   );
